@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  auth_service:
+    build: .
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    volumes:
+      - ./:/app/
+    ports:
+      - 8000:8000
+    environment:
+      - DATABASE_URI=postgresql+asyncpg://postgres:1303@localhost:5432/user
+
+  auth_db:
+    image: postgres:12.1-alpine
+    volumes:
+      - authentication_vol:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1303
+      - POSTGRES_DB=user
+volumes:
+  authentication_voldb:
